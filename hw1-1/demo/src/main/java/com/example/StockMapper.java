@@ -1,21 +1,20 @@
 package com.example;
 
-import java.io.IOException;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
+import java.io.IOException;
+
 public class StockMapper extends Mapper<Object, Text, Text, IntWritable> {
     private final static IntWritable one = new IntWritable(1);
-    private Text stock = new Text();
+    private Text stockCode = new Text();
 
-    @Override
-    protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-        // 将行分割为数组，假设股票代码在第4列
-        String[] fields = value.toString().split(",");
+    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        String[] fields = value.toString().split(","); // 分割CSV行
         if (fields.length > 3) {
-            stock.set(fields[3].trim()); // 获取股票代码
-            context.write(stock, one);    // 输出股票代码和计数1
+            stockCode.set(fields[fields.length-1]); // 获取股票代码列
+            context.write(stockCode, one); // 输出 (股票代码, 1)
         }
     }
 }

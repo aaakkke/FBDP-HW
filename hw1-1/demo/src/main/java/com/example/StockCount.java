@@ -10,22 +10,19 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class StockCount {
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.err.println("Usage: StockCount <input path> <output path>");
-            System.exit(-1);
-        }
-
         Configuration conf = new Configuration();
-        Job job = Job.getInstance(conf, "stock count");
+        Job job = Job.getInstance(conf, "Stock Count");
+
         job.setJarByClass(StockCount.class);
         job.setMapperClass(StockMapper.class);
         job.setReducerClass(StockReducer.class);
+
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
-        FileInputFormat.addInputPath(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+
+        FileInputFormat.addInputPath(job, new Path(args[0])); // 输入路径
+        FileOutputFormat.setOutputPath(job, new Path(args[1])); // 输出路径
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
 }
-
