@@ -1,0 +1,8 @@
+.vscode
+out/com
+out2/com
+out3/com
+out4/com
+target/classes
+target/test-classes
+src/test
